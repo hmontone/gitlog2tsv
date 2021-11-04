@@ -1,11 +1,13 @@
-git log --format='<%H<%P<%aN<%aE<%aI<%cN<%cE<%cI%n%x09%D%n%w(0,1,1)%B' --decorate=full -U0 --src-prefix=// --dst-prefix=// | awk '
+git log --format='<%H<%P<%aN<%aE<%aI<%cN<%cE<%cI%n%x09%D%n%w(0,1,1)%B'\
+	--decorate=full -U0 --output-indicator-old=# | awk -P '
 	sub(/^</, "") {
 		gsub(/\\/, "\\\\")
 		gsub(/\t/, "\\t")
 		gsub(/</, OFS)
 		commit = $0
 		getline
-		if (sub(/^\t[^,]* refs\//, OFS)) gsub(/,[^,]* refs\//, " ")
+		if (sub(/^\t[^,]* refs\//, OFS))
+			gsub(/,[^,]* refs\//, " ")
 		commit = commit $0
 		sep = OFS
 		while (getline && sub(/^ /, "")) {
@@ -17,15 +19,18 @@ git log --format='<%H<%P<%aN<%aE<%aI<%cN<%cE<%cI%n%x09%D%n%w(0,1,1)%B' --decorat
 		print commit
 		next
 	}
-	sub(/^diff --git [/]{2}/, OFS) {
-		sub(/ [/]{2}/, OFS)
-		print
+	sub(/^--- (a\/)?/, "") {
+		file = OFS $0
+		getline
+		sub(/^[+]{3} (b\/)?/, "")
+		print file, $0
 		next
 	}
-	sub(/^[@]{2} -/, "") {
-		sub(/[+]/, "")
+	sub(/^@@ -/, "") {
 		sub(/ @@ .*$/, "")
-		for (i = 2; i; i--) if (!sub(/,/, "\t", $i)) $i = $i OFS "1"
+		sub(/[+]/, "")
+		for (i = 2; i; i--)
+			if (!sub(/,/, "\t", $i)) $i = $i OFS 1
 		print OFS, $0
 		next
 	}' OFS='\t'
