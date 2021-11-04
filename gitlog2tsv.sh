@@ -50,6 +50,6 @@ then
 	git log $ARG | awk "$PRG" | gzip | tee "${GIT_DIR%/.git}.tsv.gz" | cksum >&2
 else
 	while read -r repo
-		do time -p sh -x $0 $repo
+		do time sh -x $0 $repo
 	done
 fi
