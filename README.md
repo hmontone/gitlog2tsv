@@ -2,7 +2,25 @@
 
 ## Usage
 
+Analyze existing repository in `/path/to/repository/.git`:
+
     GIT_DIR=/path/to/repository/.git sh /path/to/gitlog2tsv.sh
+
+Clone remote repository in URL `https://domain.part/repository`
+and analyze it:
+
+    sh /path/to/gitlog2tsv.sh https://domain.part/repository
+
+Clone list of repositories in file `/path/to/repo/list`
+(one URL in line) and analyze them:
+
+    xargs -I{} sh /path/to/gitlog2tsv.sh {} \; </path/to/repo/list
+
+Script generates a gzipped file with name of form
+`repository-directory.tsv.gz` in the current working directory.
+Latter two formats of the command clones repositories under current
+working directory with name of form `repository.git`. Repositories
+are cloned as bare repositories.
 
 ## Output
 
