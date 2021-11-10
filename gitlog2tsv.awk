@@ -10,6 +10,7 @@ sub(/^</, "") {
 	while (getline && sub(/^ /, "")) {
 		gsub(/\\/, "\\\\")
 		gsub(/\t/, "\\t")
+		gsub(/\r$/, "")
 		commit = commit sep $0
 		sep = "\\n"
 	}
@@ -23,10 +24,10 @@ sub(/^--- /, "\t") {
 	print
 	next
 }
-sub(/^@@ -/, "\t\t") {
+sub(/^@@ -/, "") {
 	sub(/ @@ .*$/, "")
 	sub(/\+/, "")
 	for (i = 2; i; i--) if (!sub(/,/, "\t", $i)) $i = $i "\t1"
-	print
+	print "\t\t" $0
 	next
 }
