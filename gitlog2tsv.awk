@@ -10,7 +10,7 @@ sub(/^</, "") {
 	while (getline && sub(/^ /, "")) {
 		gsub(/\\/, "\\\\")
 		gsub(/\t/, "\\t")
-		gsub(/\r$/, "")
+		gsub(/\r/, "\\r")
 		commit = commit sep $0
 		sep = "\\n"
 	}
