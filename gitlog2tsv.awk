@@ -28,6 +28,6 @@ sub(/^@@ -/, "") {
 	sub(/ @@ .*$/, "")
 	sub(/\+/, "")
 	for (i = 2; i; i--) if (!sub(/,/, "\t", $i)) $i = $i "\t1"
-	print "\t\t" $0
+	print "\t\t" $1 "\t" $2
 	next
 }
